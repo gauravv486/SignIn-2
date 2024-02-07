@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signin Form</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --bg-color: rgba(255, 0, 0, 0);
+    --body-color:rgb(227, 215, 215);
+    --black-color:rgba(26, 26, 25, 0.269);
+}
+body{
+    background-color: var(--body-color);
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 60vw;
+    background:var(--black-color);
+    
+}
+.container{
+    margin: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+}
+
+.form-element {
+    background-color: var(--bg-color);
+    height:auto;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.8rem;
+}
+#username{
+    height: 5vh;
+    border-radius: 8px;
+    border: none;
+    padding: 10px;
+}
+#password{
+    height:5vh ;
+    border-radius: 8px;
+    border: none;
+    padding: 10px;
+}
+#button{
+    margin:25px;
+}
+#btn{
+    height: 20px;
+    width: 100px;
+    border-radius: 5px;
+    border: hidden;
+}
+.Password-Validation p {
+    display: block;
+}
+
+    </style>
+</head>
+
+<body>
+    <section class="container">
+        <form action="" id="form">
+            <div>
+                <h1>SIGN IN</h1>
+            </div>
+            <div class="form-element">
+                <label for="input">ID</label>
+                <input type="text" id="username" value="" placeholder="Enter Your ID" autocomplete="off" />
+                <p id="min-error"></p>
+
+                <label for="">Password</label>
+                <input type="password" id="password" value="" placeholder="Enter Your Password" />
+                <p id="max-error"></p>
+            </div>
+            <div id="button">
+                <button id="btn">Submit</button>
+            </div>
+            <div class="Password-Validation">
+                <h5>While Entering Password Please take care of some points</h5>
+                <p id="specialchar">1.At least one special character(!,@,#,$,%,&....)</p>
+                <p id="lowercase">2.At least one LowerCase character(a,b,c....z)</p>
+                <p id="uppercase">3.At least one UpperCase character(A,B,C....Z)</p>
+                <p id="Numericvalue">4.At least one Numeric character(1,2,3,....9)</p>
+            </div>
+        </form>
+    </section>
+    <script src="script.js">
+        const form = document.getElementById("form");
+const username = document.getElementById("username");
+const minError = document.getElementById("min-error");
+const password = document.getElementById("password");
+const maxError = document.getElementById("max-error");
+const buttton=document.getElementById("btn");
+let flag1=false;
+let flag2=false;
+let flag3=false;
+let flag4=false;
+
+form.addEventListener("submit",function(event){
+    event.preventDefault();
+    if(username.value=="" || password.value==""){
+        alert("Before Submit Please Fill the credentials")
+    }
+    else if(username.value.length < 3){
+        alert("Invalid ID: ID Should be of minimum 3 numbers");
+    }
+    else if(username.value.length >= 10){
+        alert("ID can not exceed more the 10 number")
+    }
+    else if(flag1==true && flag2==true && flag3==true && flag4==true){
+        form.submit();
+        alert("Singin Successfull")
+    }else{
+        alert("Please enter valid Password")
+    }
+})
+
+username.addEventListener("input", function () {
+    let inputvalue = username.value.trim();
+     if (/^\d+$/.test(inputvalue)) {
+        minError.textContent = "";
+    } else {
+        minError.textContent = "ID should contain numbers only! ";
+        minError.style.fontSize = "15px";
+        minError.style.color = "red";
+        if (inputvalue == "") {
+            minError.textContent = "";
+        }
+    }
+});
+
+
+function checkpasswordvalidity(passwordvalue,character,message,flagvalue){
+
+    if(character.test(passwordvalue)){
+        message.style.display="none";
+        flagvalue=ture;
+    }
+    else{
+        message.style.display="block";
+        flagvalue=false;
+    }
+    return flagvalue;
+}
+
+password.addEventListener("input", function () {
+    const inputpassword = password.value.trim();
+    const specialchar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    const lowercasechar = /[a-z]/;
+    const uppercasechar = /[A-Z]/;
+    const numericvalue =  /\d/;
+    const specialcharcheck = document.getElementById("specialchar");
+    const lowercasecheck = document.getElementById("lowercase");
+    const uppercasecheck = document.getElementById("uppercase");
+    const numericvaluecheck = document.getElementById("Numericvalue");
+ 
+    flag1=checkpasswordvalidity(inputpassword,specialchar,specialcharcheck,flag1);
+    flag2=checkpasswordvalidity(inputpassword,lowercasechar,lowercasecheck,flag2);
+    flag3=checkpasswordvalidity(inputpassword,uppercasechar,uppercasecheck,flag3);
+    flag4=checkpasswordvalidity(inputpassword,numericvalue,numericvaluecheck,flag4);
+    
+
+    if(inputpassword=="")
+    {
+        specialcharcheck.style.display = "block";
+        lowercasecheck.style.display = "block";
+        uppercasecheck.style.display = "block";
+        numericvaluecheck.style.display ="block";
+    }
+});
+
+
+
+    </script>
+</body>
+</html>
+
